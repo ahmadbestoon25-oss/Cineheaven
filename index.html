@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سینەڤێرس — دنیای فیلم و زنجیرە</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050507;
+    --void: #09090e;
+    --surface: #0f0f17;
+    --card: #141420;
+    --border: #1e1e30;
+    --gold: #f0b429;
+    --gold2: #d4840a;
+    --red: #e84040;
+    --text: #eeeef5;
+    --muted: #666680;
+    --accent: #5e6ad2;
+    --teal: #2cb5c8;
+    --ai: #a855f7;
+    --ai2: #7c3aed;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Noto Naskh Arabic', serif;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ═══ NAV ═══ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    height: 68px;
+    background: rgba(5,5,7,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(240,180,41,0.1);
+  }
+
+  .logo {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 24px rgba(240,180,41,0.5);
+    letter-spacing: 0;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-sub {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--gold);
+    background: rgba(240,180,41,0.08);
+  }
+  .nav-btn.ai-btn {
+    background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.1));
+    border: 1px solid rgba(168,85,247,0.3);
+    color: #c084fc;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn.ai-btn:hover {
+    background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(124,58,237,0.2));
+    color: #e879f9;
+    border-color: rgba(168,85,247,0.5);
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .search-wrap { position: relative; }
+  #searchInput {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.9rem;
+    padding: 8px 40px 8px 14px;
+    border-radius: 8px;
+    width: 240px;
+    outline: none;
+    transition: all 0.3s;
+    direction: rtl;
+    text-align: right;
+  }
+  #searchInput:focus {
+    border-color: var(--gold);
+    background: rgba(240,180,41,0.04);
+    box-shadow: 0 0 0 3px rgba(240,180,41,0.08);
+  }
+  #searchInput::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* ═══ HERO ═══ */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 580px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  #heroBg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: all 1.2s ease;
+  }
+  #heroBg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(9,9,14,1) 0%,
+      rgba(9,9,14,0.75) 35%,
+      rgba(9,9,14,0.25) 65%,
+      rgba(9,9,14,0.05) 100%
+    );
+  }
+  #heroBg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left, rgba(9,9,14,0.7) 0%, transparent 60%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 60px 70px;
+    max-width: 680px;
+    animation: heroIn 0.9s ease both;
+  }
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(240,180,41,0.12);
+    border: 1px solid rgba(240,180,41,0.35);
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    margin-right: 8px;
+  }
+  .hero-type-badge.movie { background: rgba(44,181,200,0.2); color: var(--teal); border: 1px solid rgba(44,181,200,0.3); }
+  .hero-type-badge.tv { background: rgba(94,106,210,0.2); color: #818cf8; border: 1px solid rgba(94,106,210,0.3); }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.7);
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .star-rating {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hero-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .hero-overview {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: rgba(238,238,245,0.72);
+    margin-bottom: 26px;
+    max-width: 500px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold); color: #000;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 700; font-size: 0.9rem;
+    padding: 12px 26px; border-radius: 8px;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(240,180,41,0.35); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+    color: var(--text); font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 600; font-size: 0.9rem;
+    padding: 12px 26px; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.14); transform: translateY(-2px); }
+
+  .hero-dots {
+    position: absolute;
+    bottom: 28px; left: 60px;
+    display: flex; gap: 8px; z-index: 2;
+  }
+  .hero-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s;
+  }
+  .hero-dot.active { background: var(--gold); width: 22px; border-radius: 3px; }
+
+  /* ═══ SECTIONS ═══ */
+  .section {
+    padding: 52px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .section-header {
+    display: flex; align-items: baseline;
+    justify-content: space-between; margin-bottom: 24px;
+  }
+  .section-title {
+    font-size: 1.45rem; font-weight: 700;
+    color: var(--text); display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .gold { color: var(--gold); }
+  .see-all {
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--muted); cursor: pointer;
+    border: none; background: none;
+    transition: color 0.2s; font-family: 'Noto Naskh Arabic', serif;
+  }
+  .see-all:hover { color: var(--gold); }
+
+  /* ═══ FILTER TABS ═══ */
+  .filter-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .filter-tab {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.82rem; font-weight: 500;
+    padding: 6px 16px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-tab:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-tab.active { background: var(--gold); border-color: var(--gold); color: #000; font-weight: 700; }
+
+  /* ═══ SCROLL ROW ═══ */
+  .scroll-row {
+    display: flex; gap: 14px;
+    overflow-x: auto; padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .scroll-row::-webkit-scrollbar { display: none; }
+
+  /* ═══ CARD ═══ */
+  .card {
+    flex: 0 0 165px; scroll-snap-align: start;
+    cursor: pointer; position: relative; transition: transform 0.3s;
+  }
+  .card:hover { transform: translateY(-6px); }
+  .card:hover .card-overlay { opacity: 1; }
+  .card:hover .card-poster { filter: brightness(0.45); }
+
+  .card-poster-wrap {
+    position: relative; border-radius: 10px; overflow: hidden;
+    aspect-ratio: 2/3; background: var(--card); margin-bottom: 9px;
+  }
+  .card-poster { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.3s; }
+  .card-no-poster {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; color: var(--muted); font-size: 0.75rem;
+    background: linear-gradient(135deg, #141420, #1e1e30);
+  }
+
+  .card-rating {
+    position: absolute; bottom: 8px; right: 8px;
+    background: rgba(9,9,14,0.88);
+    border: 1px solid rgba(240,180,41,0.35);
+    color: var(--gold); font-size: 0.7rem; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .card-type-badge {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px;
+  }
+  .card-type-badge.movie { background: rgba(44,181,200,0.85); color: #000; }
+  .card-type-badge.tv { background: rgba(94,106,210,0.85); color: #fff; }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card-play-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--gold); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 1rem; color: #000;
+    transform: scale(0.8); transition: transform 0.3s;
+  }
+  .card:hover .card-play-btn { transform: scale(1); }
+
+  .wl-btn {
+    position: absolute; top: 8px; left: 8px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(9,9,14,0.8); border: 1px solid var(--border);
+    color: var(--muted); font-size: 0.8rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 3;
+  }
+  .wl-btn:hover, .wl-btn.saved { background: var(--gold); border-color: var(--gold); color: #000; }
+
+  .card-title {
+    font-size: 0.85rem; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+  .card-year { font-size: 0.75rem; color: var(--muted); }
+
+  /* ═══ GRID ═══ */
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 18px;
+  }
+  .movies-grid .card { flex: unset; }
+
+  /* ═══ SKELETON ═══ */
+  .skeleton {
+    background: linear-gradient(90deg, var(--card) 25%, var(--border) 50%, var(--card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 10px;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .sk-card { flex: 0 0 165px; aspect-ratio: 2/3; }
+
+  /* ═══ GENRES ═══ */
+  .genres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .genre-card {
+    border-radius: 10px; overflow: hidden;
+    aspect-ratio: 3/1.8; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700;
+    border: 1px solid var(--border); transition: all 0.2s;
+  }
+  .genre-card:hover { transform: scale(1.04); border-color: var(--gold); }
+
+  /* ═══ STATS ═══ */
+  .stats-bar {
+    background: linear-gradient(135deg, var(--card), rgba(20,20,32,0.5));
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 36px;
+    display: flex; gap: 36px; justify-content: center; flex-wrap: wrap;
+    margin: 0 40px 40px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 700; color: var(--gold); display: block; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); }
+
+  /* ═══ TOP RATED ═══ */
+  .top10-item {
+    display: flex; align-items: center; gap: 18px;
+    padding: 13px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .top10-item:hover { padding-right: 8px; }
+  .top10-rank { font-size: 2.2rem; font-weight: 700; color: var(--border); width: 48px; text-align: center; flex-shrink: 0; transition: color 0.2s; }
+  .top10-item:hover .top10-rank { color: var(--gold); }
+  .top10-thumb { width: 50px; height: 75px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; background: var(--card); }
+  .top10-info { flex: 1; min-width: 0; }
+  .top10-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top10-sub { font-size: 0.78rem; color: var(--muted); }
+  .score-wrap { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+  .score-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--gold2), var(--gold)); }
+  .top10-score { flex-shrink: 0; text-align: center; }
+  .top10-score .num { font-size: 1.4rem; font-weight: 700; color: var(--gold); display: block; }
+  .top10-score .lbl { font-size: 0.65rem; color: var(--muted); }
+
+  /* ═══ AI PANEL ═══ */
+  #page-ai {
+    padding-top: 68px;
+    min-height: 100vh;
+  }
+
+  .ai-hero {
+    background: linear-gradient(135deg, rgba(168,85,247,0.12) 0%, rgba(124,58,237,0.06) 50%, rgba(9,9,14,0) 100%);
+    border-bottom: 1px solid rgba(168,85,247,0.15);
+    padding: 60px 40px 50px;
+    text-align: center;
+  }
+
+  .ai-icon-wrap {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--ai), var(--ai2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 20px;
+    box-shadow: 0 0 40px rgba(168,85,247,0.4);
+    animation: aiPulse 3s ease-in-out infinite;
+  }
+  @keyframes aiPulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(168,85,247,0.4); }
+    50% { box-shadow: 0 0 60px rgba(168,85,247,0.7); }
+  }
+
+  .ai-title {
+    font-size: 2rem; font-weight: 700;
+    background: linear-gradient(135deg, #c084fc, #818cf8, #a855f7);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  .ai-subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 32px; }
+
+  .ai-questions {
+    display: flex; flex-direction: column; gap: 16px;
+    max-width: 700px; margin: 0 auto;
+  }
+
+  .ai-question-group { text-align: right; }
+  .ai-question-label {
+    font-size: 0.8rem; color: var(--ai); font-weight: 600;
+    margin-bottom: 8px; display: block;
+  }
+
+  .ai-chips {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .ai-chip {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.25);
+    color: #c084fc;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 8px 18px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .ai-chip:hover { background: rgba(168,85,247,0.2); border-color: rgba(168,85,247,0.5); }
+  .ai-chip.selected { background: linear-gradient(135deg, var(--ai), var(--ai2)); border-color: var(--ai); color: #fff; font-weight: 700; }
+
+  .ai-mood-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px; max-width: 700px; margin: 0 auto;
+  }
+  .ai-mood-card {
+    background: rgba(168,85,247,0.07);
+    border: 1px solid rgba(168,85,247,0.18);
+    color: #c084fc;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 14px 10px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+    display: flex; flex-direction: column; gap: 6px; align-items: center;
+  }
+  .ai-mood-card:hover { background: rgba(168,85,247,0.15); transform: translateY(-2px); }
+  .ai-mood-card.selected { background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(124,58,237,0.2)); border-color: var(--ai); color: #fff; }
+  .ai-mood-card .mood-emoji { font-size: 1.6rem; }
+
+  .ai-generate-btn {
+    background: linear-gradient(135deg, var(--ai), var(--ai2));
+    color: #fff; font-family: 'Noto Naskh Arabic', serif;
+    font-size: 1rem; font-weight: 700;
+    padding: 14px 36px; border-radius: 10px;
+    border: none; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 4px 20px rgba(168,85,247,0.3);
+  }
+  .ai-generate-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(168,85,247,0.5); }
+  .ai-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .ai-loading {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; padding: 40px; color: var(--ai);
+    font-size: 0.9rem;
+  }
+  .ai-spinner {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid rgba(168,85,247,0.2);
+    border-top-color: var(--ai);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .ai-results-header {
+    font-size: 1.3rem; font-weight: 700;
+    color: #c084fc; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .ai-result-card {
+    background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(9,9,14,0));
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 12px; padding: 0; overflow: hidden;
+    cursor: pointer; transition: all 0.25s;
+    display: flex; align-items: stretch;
+  }
+  .ai-result-card:hover { transform: translateY(-3px); border-color: rgba(168,85,247,0.4); box-shadow: 0 8px 24px rgba(168,85,247,0.15); }
+
+  .ai-result-poster {
+    width: 90px; flex-shrink: 0;
+    object-fit: cover; border-left: 1px solid rgba(168,85,247,0.2);
+  }
+  .ai-result-poster-empty {
+    width: 90px; flex-shrink: 0; background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+
+  .ai-result-info { padding: 16px; flex: 1; text-align: right; }
+  .ai-result-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .ai-result-why {
+    font-size: 0.82rem; color: #c084fc; margin-bottom: 8px;
+    line-height: 1.6; font-style: italic;
+  }
+  .ai-result-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ai-result-chip {
+    background: rgba(168,85,247,0.12);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--muted); font-size: 0.72rem; padding: 2px 8px; border-radius: 12px;
+  }
+  .ai-match-score {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--gold); font-weight: 700; font-size: 0.85rem; margin-top: 8px;
+  }
+
+  /* ═══ MODAL ═══ */
+  #modal {
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  #modal.open { opacity: 1; pointer-events: all; }
+  .modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(5,5,7,0.9); backdrop-filter: blur(12px);
+  }
+  .modal-box {
+    position: relative; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 18px;
+    max-width: 860px; width: 100%; max-height: 90vh;
+    overflow-y: auto; transform: scale(0.94) translateY(18px);
+    transition: transform 0.3s; scrollbar-width: none;
+  }
+  .modal-box::-webkit-scrollbar { display: none; }
+  #modal.open .modal-box { transform: scale(1) translateY(0); }
+
+  .modal-backdrop-img { width: 100%; height: 300px; object-fit: cover; border-radius: 18px 18px 0 0; display: block; }
+  .modal-grad { position: absolute; top: 0; left: 0; right: 0; height: 300px; border-radius: 18px 18px 0 0; background: linear-gradient(0deg, var(--surface) 0%, rgba(15,15,23,0.4) 100%); }
+
+  .modal-close {
+    position: absolute; top: 14px; left: 14px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,0.7); border: 1px solid var(--border);
+    color: var(--text); font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10; transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--red); border-color: var(--red); }
+
+  .modal-body { padding: 24px; }
+  .modal-top { display: flex; gap: 22px; align-items: flex-start; }
+  .modal-poster { flex: 0 0 150px; border-radius: 10px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.6); margin-top: -70px; border: 3px solid var(--border); }
+  .modal-poster img { width: 100%; display: block; }
+  .modal-info { flex: 1; }
+  .modal-title { font-size: 1.9rem; font-weight: 700; margin-bottom: 10px; color: #fff; line-height: 1.2; }
+  .modal-meta-row { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 14px; align-items: center; }
+  .modal-rating { color: var(--gold); font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+  .modal-chip { background: var(--card); border: 1px solid var(--border); color: var(--muted); font-size: 0.73rem; padding: 3px 10px; border-radius: 20px; }
+  .modal-overview { font-size: 0.88rem; line-height: 1.8; color: rgba(238,238,245,0.72); margin-bottom: 22px; }
+  .modal-section-title { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+  .cast-grid { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+  .cast-grid::-webkit-scrollbar { display: none; }
+  .cast-card { flex: 0 0 82px; text-align: center; }
+  .cast-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); margin: 0 auto 5px; display: block; background: var(--card); }
+  .cast-name { font-size: 0.68rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cast-char { font-size: 0.62rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .similar-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+  .similar-row::-webkit-scrollbar { display: none; }
+  .sim-card { flex: 0 0 110px; cursor: pointer; }
+  .sim-card img { width: 100%; border-radius: 6px; aspect-ratio: 2/3; object-fit: cover; border: 1px solid var(--border); transition: all 0.2s; }
+  .sim-card:hover img { border-color: var(--gold); transform: scale(1.04); }
+  .sim-card p { font-size: 0.7rem; margin-top: 4px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .trailer-wrap { position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 22px; background: var(--card); }
+  .trailer-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+  /* ═══ WATCHLIST PAGE ═══ */
+  .watchlist-page { padding: 100px 40px 60px; max-width: 1600px; margin: 0 auto; }
+  .wl-empty { text-align: center; padding: 70px 20px; color: var(--muted); }
+  .wl-empty .big { font-size: 3.5rem; margin-bottom: 14px; }
+
+  /* ═══ SEARCH PAGE ═══ */
+  .search-results-page { padding: 100px 40px 60px; max-width: 1600px; margin: 0 auto; }
+  .search-header-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 22px; }
+  .search-header-title span { color: var(--gold); }
+
+  /* ═══ LOAD MORE ═══ */
+  .load-more-wrap { text-align: center; padding: 28px 0; }
+  .load-more-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text); font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.88rem; font-weight: 600;
+    padding: 11px 30px; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .load-more-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(240,180,41,0.06); }
+
+  /* ═══ TOAST ═══ */
+  #toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(18px);
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--text); font-size: 0.85rem; font-weight: 500;
+    padding: 11px 22px; border-radius: 8px; z-index: 999;
+    opacity: 0; transition: all 0.3s; white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ═══ PAGES ═══ */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ═══ FADE IN ═══ */
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ FOOTER ═══ */
+  footer {
+    background: var(--black); border-top: 1px solid var(--border);
+    padding: 44px 40px; text-align: center;
+  }
+  .footer-logo { font-size: 1.6rem; font-weight: 700; color: var(--gold); opacity: 0.35; margin-bottom: 12px; }
+  footer p { color: var(--muted); font-size: 0.78rem; max-width: 480px; margin: 0 auto 6px; line-height: 1.6; }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ═══ HAMBURGER ═══ */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 110;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    background: rgba(5,5,7,0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(240,180,41,0.15);
+    padding: 12px 14px 16px;
+    z-index: 99;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu .nav-btn {
+    text-align: right;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .mobile-search-wrap {
+    position: relative;
+    margin-top: 6px;
+  }
+  .mobile-search-wrap #mobileSearchInput {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.95rem;
+    padding: 10px 40px 10px 14px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    direction: rtl;
+    text-align: right;
+  }
+  .mobile-search-wrap #mobileSearchInput:focus {
+    border-color: var(--gold);
+    background: rgba(240,180,41,0.05);
+  }
+  .mobile-search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    nav { padding: 0 14px; }
+    .nav-links { display: none; }
+    .nav-left { display: none; }
+    .hamburger { display: flex; }
+    #searchInput { width: 130px; }
+    .hero-content { padding: 40px 18px 60px; }
+    .section { padding: 36px 14px; }
+    .stats-bar { margin: 0 14px 36px; padding: 16px; gap: 18px; }
+    .modal-top { flex-direction: column; }
+    .modal-poster { margin-top: -50px; flex: 0 0 110px; }
+    .search-results-page, .watchlist-page { padding: 90px 14px 40px; }
+    .ai-hero { padding: 50px 14px 40px; }
+    .ai-mood-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="logo">
+    🎬 سینەڤێرس
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home')">سەرەکی</button>
+    <button class="nav-btn" onclick="showPage('movies')">فیلمەکان</button>
+    <button class="nav-btn" onclick="showPage('tv')">زنجیرەکان</button>
+    <button class="nav-btn" onclick="showPage('top')">باشترینەکان</button>
+    <button class="nav-btn ai-btn" onclick="showPage('ai')">✨ AI پێشنیار</button>
+    <button class="nav-btn" onclick="showPage('watchlist')">🔖 لیستم</button>
+  </div>
+  <div class="nav-left">
+    <div class="search-wrap">
+      <input id="searchInput" type="text" placeholder="بگەڕێ... فیلم، زنجیرە">
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="nav-btn" onclick="showPage('home');closeMobileMenu()">🏠 سەرەکی</button>
+  <button class="nav-btn" onclick="showPage('movies');closeMobileMenu()">🎬 فیلمەکان</button>
+  <button class="nav-btn" onclick="showPage('tv');closeMobileMenu()">📺 زنجیرەکان</button>
+  <button class="nav-btn" onclick="showPage('top');closeMobileMenu()">🏆 باشترینەکان</button>
+  <button class="nav-btn ai-btn" onclick="showPage('ai');closeMobileMenu()">✨ AI پێشنیار</button>
+  <button class="nav-btn" onclick="showPage('watchlist');closeMobileMenu()">🔖 لیستم</button>
+  <div class="mobile-search-wrap">
+    <input id="mobileSearchInput" type="text" placeholder="گەڕان بەدوای فیلم، زنجیرە...">
+    <span class="mobile-search-icon">🔍</span>
+  </div>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div id="modal">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ═══════ HOME ═══════ -->
+<div id="page-home" class="page active">
+  <section id="hero">
+    <div id="heroBg"></div>
+    <div class="hero-content" id="heroContent">
+      <div class="hero-badge">⭐ ئەمڕۆی تازە</div>
+      <div id="heroTitle" class="hero-title">چاوەڕوان بە...</div>
+      <div class="hero-meta" id="heroMeta"></div>
+      <div class="hero-overview" id="heroOverview"></div>
+      <div class="hero-actions">
+        <button class="btn-primary" id="heroDetailsBtn">ℹ️ زیاتر بزانە</button>
+        <button class="btn-secondary" id="heroWLBtn">🔖 زیادی بکە</button>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-num" id="statMovies">—</span><span class="stat-label">فیلم</span></div>
+    <div class="stat-item"><span class="stat-num" id="statTV">—</span><span class="stat-label">زنجیرە</span></div>
+    <div class="stat-item"><span class="stat-num">5,000+</span><span class="stat-label">کۆی ناونیشان</span></div>
+    <div class="stat-item"><span class="stat-num">195</span><span class="stat-label">وڵات</span></div>
+    <div class="stat-item"><span class="stat-num">4K</span><span class="stat-label">پۆستەر</span></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">🔥 <span class="gold">گەرم</span>ترینەکان</div>
+      <button class="see-all" onclick="showPage('movies')">هەمووی ببینە ←</button>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="loadTrending('all',this)">هەموو</button>
+      <button class="filter-tab" onclick="loadTrending('movie',this)">فیلم</button>
+      <button class="filter-tab" onclick="loadTrending('tv',this)">زنجیرە</button>
+    </div>
+    <div class="scroll-row" id="trendingRow">${sk(8)}</div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">🎬 فیلمی <span class="gold">بەناوبانگ</span></div>
+      <button class="see-all" onclick="showPage('movies')">هەمووی ببینە ←</button>
+    </div>
+    <div class="scroll-row" id="popMoviesRow">${sk(8)}</div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">📺 زنجیرەی <span class="gold">بەناوبانگ</span></div>
+      <button class="see-all" onclick="showPage('tv')">هەمووی ببینە ←</button>
+    </div>
+    <div class="scroll-row" id="popTVRow">${sk(8)}</div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">🎭 <span class="gold">ئێستا</span> لە سینەما</div>
+      <button class="see-all" onclick="showPage('movies')">هەمووی ببینە ←</button>
+    </div>
+    <div class="scroll-row" id="nowPlayingRow">${sk(8)}</div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">🏆 <span class="gold">باشترین</span> نمرە</div>
+      <button class="see-all" onclick="showPage('top')">هەمووی ببینە ←</button>
+    </div>
+    <div class="scroll-row" id="topRatedRow">${sk(8)}</div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="section-header">
+      <div class="section-title">🎨 جۆرەکان</div>
+    </div>
+    <div class="genres-grid" id="genresGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════ MOVIES PAGE ═══════ -->
+<div id="page-movies" class="page">
+  <div class="section" style="padding-top:100px;">
+    <div class="section-header">
+      <div class="section-title">🎬 فیلمەکان</div>
+    </div>
+    <div class="filter-tabs" id="movieGenreTabs"></div>
+    <div class="movies-grid" id="moviesGrid"></div>
+    <div class="load-more-wrap">
+      <button class="load-more-btn" onclick="loadMoreMovies()">زیاتر بار بکە</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TV PAGE ═══════ -->
+<div id="page-tv" class="page">
+  <div class="section" style="padding-top:100px;">
+    <div class="section-header">
+      <div class="section-title">📺 زنجیرەکان</div>
+    </div>
+    <div class="filter-tabs" id="tvGenreTabs"></div>
+    <div class="movies-grid" id="tvGrid"></div>
+    <div class="load-more-wrap">
+      <button class="load-more-btn" onclick="loadMoreTV()">زیاتر بار بکە</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TOP RATED PAGE ═══════ -->
+<div id="page-top" class="page">
+  <div class="section" style="padding-top:100px;">
+    <div class="section-header">
+      <div class="section-title">🏆 باشترین نمرە</div>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="switchTop('movie',this)">فیلم</button>
+      <button class="filter-tab" onclick="switchTop('tv',this)">زنجیرە</button>
+    </div>
+    <div id="top10List"></div>
+    <div class="load-more-wrap">
+      <button class="load-more-btn" onclick="loadMoreTop()">زیاتر بار بکە</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ AI PAGE ═══════ -->
+<div id="page-ai" class="page">
+  <div class="ai-hero">
+    <div class="ai-icon-wrap">🤖</div>
+    <div class="ai-title">زیرەکی دەستکرد پێشنیارت بکا</div>
+    <div class="ai-subtitle">چەند پرسیار وەڵام بدەوە، داتابەیسەکە هەڵدەبژێرێت باشترینی بۆت</div>
+
+    <div class="ai-questions">
+      <!-- Q1: Type -->
+      <div class="ai-question-group">
+        <span class="ai-question-label">١. چیت دەوێت؟</span>
+        <div class="ai-chips" id="aiTypeChips">
+          <button class="ai-chip selected" data-group="type" data-val="movie" onclick="selectChip(this,'type')">🎬 فیلم</button>
+          <button class="ai-chip" data-group="type" data-val="tv" onclick="selectChip(this,'type')">📺 زنجیرە</button>
+          <button class="ai-chip" data-group="type" data-val="both" onclick="selectChip(this,'type')">هەردووکیان</button>
+        </div>
+      </div>
+
+      <!-- Q2: Mood -->
+      <div class="ai-question-group">
+        <span class="ai-question-label">٢. حالتت چۆنە ئێشتا؟</span>
+        <div class="ai-mood-grid" id="aiMoodGrid">
+          <div class="ai-mood-card selected" data-val="action" onclick="selectMood(this)"><span class="mood-emoji">💥</span>کردار و هەجووم</div>
+          <div class="ai-mood-card" data-val="comedy" onclick="selectMood(this)"><span class="mood-emoji">😂</span>خۆشویستی و کۆمیدی</div>
+          <div class="ai-mood-card" data-val="drama" onclick="selectMood(this)"><span class="mood-emoji">🎭</span>دراما و هەست</div>
+          <div class="ai-mood-card" data-val="horror" onclick="selectMood(this)"><span class="mood-emoji">👻</span>ترسناک</div>
+          <div class="ai-mood-card" data-val="sci-fi" onclick="selectMood(this)"><span class="mood-emoji">🚀</span>زانست و ئاینده</div>
+          <div class="ai-mood-card" data-val="romance" onclick="selectMood(this)"><span class="mood-emoji">❤️</span>خۆشەویستی</div>
+          <div class="ai-mood-card" data-val="thriller" onclick="selectMood(this)"><span class="mood-emoji">🔍</span>سرووشت و تریلر</div>
+          <div class="ai-mood-card" data-val="animation" onclick="selectMood(this)"><span class="mood-emoji">🎨</span>کارتون</div>
+          <div class="ai-mood-card" data-val="documentary" onclick="selectMood(this)"><span class="mood-emoji">📹</span>دۆکیومێنتری</div>
+          <div class="ai-mood-card" data-val="adventure" onclick="selectMood(this)"><span class="mood-emoji">🗺️</span>ماجرا و ئامادەیی</div>
+        </div>
+      </div>
+
+      <!-- Q3: Rating preference -->
+      <div class="ai-question-group">
+        <span class="ai-question-label">٣. نمرەی کێ باشترە?</span>
+        <div class="ai-chips">
+          <button class="ai-chip selected" data-group="rating" data-val="9" onclick="selectChip(this,'rating')">⭐ 9+ نمرەی باشترین</button>
+          <button class="ai-chip" data-group="rating" data-val="8" onclick="selectChip(this,'rating')">⭐ 8+ زۆر باش</button>
+          <button class="ai-chip" data-group="rating" data-val="7" onclick="selectChip(this,'rating')">⭐ 7+ باش</button>
+          <button class="ai-chip" data-group="rating" data-val="any" onclick="selectChip(this,'rating')">هەموو نمرەیەک</button>
+        </div>
+      </div>
+
+      <!-- Q4: Era -->
+      <div class="ai-question-group">
+        <span class="ai-question-label">٤. ساڵی چ سەردەمێک؟</span>
+        <div class="ai-chips">
+          <button class="ai-chip selected" data-group="era" data-val="new" onclick="selectChip(this,'era')">🆕 تازە (2020+)</button>
+          <button class="ai-chip" data-group="era" data-val="2010s" onclick="selectChip(this,'era')">📅 2010-2019</button>
+          <button class="ai-chip" data-group="era" data-val="2000s" onclick="selectChip(this,'era')">📅 2000-2009</button>
+          <button class="ai-chip" data-group="era" data-val="classic" onclick="selectChip(this,'era')">🎞️ کلاسیک (پیش 2000)</button>
+          <button class="ai-chip" data-group="era" data-val="any" onclick="selectChip(this,'era')">هەموو ساڵ</button>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;margin-top:8px;">
+        <button class="ai-generate-btn" id="aiGenBtn" onclick="generateAI()">
+          ✨ پێشنیارم بکە
+        </button>
+      </div>
+    </div>
+
+    <div id="aiResults" style="max-width:700px;margin:40px auto 0;"></div>
+  </div>
+</div>
+
+<!-- ═══════ WATCHLIST ═══════ -->
+<div id="page-watchlist" class="page">
+  <div class="watchlist-page">
+    <div class="section-title" style="margin-bottom:24px;">🔖 لیستی <span class="gold">من</span></div>
+    <div id="watchlistContent"></div>
+  </div>
+</div>
+
+<!-- ═══════ SEARCH ═══════ -->
+<div id="page-search" class="page">
+  <div class="search-results-page">
+    <div class="search-header-title">ئەنجامی گەڕان بۆ: <span id="searchTermEl" style="color:var(--gold)"></span></div>
+    <div class="movies-grid" id="searchGrid"></div>
+    <div class="load-more-wrap" id="searchLM" style="display:none;">
+      <button class="load-more-btn" onclick="loadMoreSearch()">زیاتر بار بکە</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">🎬 سینەڤێرس</div>
+  <p>داتای فیلم و زنجیرەکان بە ئاستی باش. خزمەتکراوی <a href="https://www.themoviedb.org" target="_blank">TMDB</a>.</p>
+  <p style="font-size:0.7rem;opacity:0.4;margin-top:6px;">ئەم بەرهەمە بە TMDB API کار دەکات بەڵام لەلایەن TMDB تەستیقکراو نییە.</p>
+</footer>
+
+<script>
+// ─── CONFIG ───
+const API_KEY = '8265bd1679663a7ea12ac168da84d2e8';
+const BASE = 'https://api.themoviedb.org/3';
+const IMG = 'https://image.tmdb.org/t/p/';
+const CLAUDE_API = 'https://api.anthropic.com/v1/messages';
+
+// ─── STATE ───
+let watchlist = JSON.parse(localStorage.getItem('cv_wl') || '[]');
+let heroMovies = [], heroIdx = 0, heroTimer;
+let moviePage = 1, tvPage = 1, topPage = 1, searchPage = 1;
+let topType = 'movie', movieGenre = '', tvGenre = '';
+let searchQuery = '', genreMap = {};
+let aiPrefs = { type: 'movie', mood: 'action', rating: '9', era: 'new' };
+
+// ─── UTILS ───
+function sk(n) { return Array(n).fill('<div class="skeleton sk-card"></div>').join(''); }
+const imgUrl = (p, s='w500') => p ? `${IMG}${s}${p}` : null;
+const yr = d => d ? d.slice(0,4) : '—';
+const pct = n => Math.round((n||0)*10);
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+async function api(ep, params={}, retries=2) {
+  const p = new URLSearchParams({ api_key: API_KEY, language: 'en-US', ...params });
+  for(let i=0; i<=retries; i++) {
+    try {
+      const controller = new AbortController();
+      const tid = setTimeout(() => controller.abort(), 12000);
+      const r = await fetch(`${BASE}${ep}?${p}`, { signal: controller.signal });
+      clearTimeout(tid);
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return await r.json();
+    } catch(e) {
+      if(i===retries) throw e;
+      await new Promise(res => setTimeout(res, 900*(i+1)));
+    }
+  }
+}
+
+// ─── CARD ───
+function card(item, trending=false) {
+  const isTV = item.media_type==='tv' || item.first_air_date!==undefined;
+  const title = item.title || item.name || '—';
+  const date = item.release_date || item.first_air_date || '';
+  const rating = item.vote_average ? item.vote_average.toFixed(1) : '—';
+  const poster = item.poster_path ? imgUrl(item.poster_path) : null;
+  const saved = watchlist.some(w => w.id===item.id);
+  const dataStr = JSON.stringify(item).replace(/"/g,'&quot;');
+  return `
+    <div class="card" onclick="openModal(${item.id},'${isTV?'tv':'movie'}')">
+      <div class="card-poster-wrap">
+        ${poster ? `<img class="card-poster" src="${poster}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling&&this.nextElementSibling.remove();this.parentNode.insertAdjacentHTML('afterbegin','<div class=\\'card-no-poster\\'>🎬<br><small>${title.replace(/'/g,"&#39;")}</small></div>')">` : `<div class="card-no-poster">🎬<br><small>${title}</small></div>`}
+        ${rating!=='—' ? `<div class="card-rating">★ ${rating}</div>` : ''}
+        <div class="card-type-badge ${isTV?'tv':'movie'}">${isTV?'زنجیرە':'فیلم'}</div>
+        <div class="card-overlay"><div class="card-play-btn">▶</div></div>
+        <button class="wl-btn ${saved?'saved':''}" onclick="event.stopPropagation();toggleWL(${dataStr},this)" title="${saved?'لادەبرێت':'زیادی بکە'}">${saved?'🔖':'+'}</button>
+      </div>
+      <div class="card-title">${title}</div>
+      <div class="card-year">${yr(date)}</div>
+    </div>`;
+}
+
+function top10(item, rank) {
+  const isTV = item.media_type==='tv' || item.first_air_date!==undefined;
+  const title = item.title || item.name || '—';
+  const date = item.release_date || item.first_air_date || '';
+  const rating = item.vote_average ? item.vote_average.toFixed(1) : '—';
+  const poster = item.poster_path ? imgUrl(item.poster_path,'w185') : null;
+  return `
+    <div class="top10-item" onclick="openModal(${item.id},'${isTV?'tv':'movie'}')">
+      <div class="top10-rank">${String(rank).padStart(2,'0')}</div>
+      ${poster ? `<img class="top10-thumb" src="${poster}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'top10-thumb\\'style=\\'display:flex;align-items:center;justify-content:center;font-size:1.4rem;\\'>🎬</div>'">` : `<div class="top10-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🎬</div>`}
+      <div class="top10-info">
+        <div class="top10-title">${title}</div>
+        <div class="top10-sub">${yr(date)} · ${isTV?'زنجیرە':'فیلم'}</div>
+        <div class="score-wrap">
+          <div class="score-bar"><div class="score-fill" style="width:${pct(item.vote_average)}%"></div></div>
+          <span style="font-size:0.7rem;color:var(--muted)">${pct(item.vote_average)}%</span>
+        </div>
+      </div>
+      <div class="top10-score"><span class="num">${rating}</span><span class="lbl">نمرە</span></div>
+    </div>`;
+}
+
+// ─── HERO ───
+async function initHero() {
+  // Try /trending/all/day first, fallback to /movie/popular
+  let results = [];
+  try {
+    const d = await api('/trending/all/day');
+    results = (d.results || []).filter(m => m.backdrop_path);
+  } catch(e) {}
+  if(!results.length) {
+    try {
+      const d = await api('/movie/popular');
+      results = (d.results || []).filter(m => m.backdrop_path);
+    } catch(e) {}
+  }
+  if(!results.length) {
+    document.getElementById('heroTitle').textContent = 'سینەڤێرس';
+    document.getElementById('heroOverview').textContent = 'تکایە ئینتەرنێتەکەت پشکنین بکە.';
+    return;
+  }
+  heroMovies = results.slice(0,8);
+  setHero(0);
+  const dots = document.getElementById('heroDots');
+  dots.innerHTML = heroMovies.map((_,i) => `<div class="hero-dot ${i===0?'active':''}" onclick="setHero(${i})"></div>`).join('');
+  heroTimer = setInterval(() => setHero((heroIdx+1)%heroMovies.length), 7000);
+}
+
+function setHero(i) {
+  heroIdx = i;
+  const m = heroMovies[i]; if(!m) return;
+  const isTV = m.media_type==='tv';
+  const title = m.title || m.name;
+  const date = m.release_date || m.first_air_date;
+  const rating = m.vote_average ? m.vote_average.toFixed(1) : '—';
+
+  const bgEl = document.getElementById('heroBg');
+  const bgImg = new Image();
+  bgImg.onload = () => { bgEl.style.backgroundImage = `url(${imgUrl(m.backdrop_path,'original')})`; };
+  bgImg.onerror = () => { bgEl.style.backgroundImage = `url(${imgUrl(m.backdrop_path,'w780')})`; };
+  bgImg.src = imgUrl(m.backdrop_path,'original');
+  document.getElementById('heroTitle').textContent = title;
+  document.getElementById('heroMeta').innerHTML = `
+    <div class="star-rating">★ ${rating}</div>
+    <span class="hero-chip">${yr(date)}</span>
+    <span class="hero-type-badge ${isTV?'tv':'movie'}">${isTV?'📺 زنجیرە':'🎬 فیلم'}</span>
+    ${m.original_language ? `<span class="hero-chip">${m.original_language.toUpperCase()}</span>` : ''}
+  `;
+  document.getElementById('heroOverview').textContent = m.overview || '';
+  document.getElementById('heroDetailsBtn').onclick = () => openModal(m.id, isTV?'tv':'movie');
+  document.getElementById('heroWLBtn').onclick = () => toggleWL(m, document.getElementById('heroWLBtn'));
+  document.querySelectorAll('.hero-dot').forEach((d,idx) => d.classList.toggle('active', idx===i));
+}
+
+// ─── TRENDING ───
+async function loadTrending(type, btn) {
+  document.querySelectorAll('#page-home .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const row = document.getElementById('trendingRow');
+  row.innerHTML = sk(8);
+  const d = await api(`/trending/${type}/week`);
+  row.innerHTML = d.results.slice(0,14).map(m => card(m,true)).join('');
+}
+
+// ─── GENRES ───
+async function loadGenres() {
+  const [mg, tg] = await Promise.all([api('/genre/movie/list'), api('/genre/tv/list')]);
+  [...mg.genres,...tg.genres].forEach(g => genreMap[g.id]=g.name);
+
+  const colors = ['#0d1b2a','#1a0a1a','#0a1a0d','#1a0d00','#0d0d1a','#1a1a0d','#0a1a1a','#150015','#001515','#151500','#150500','#050015','#001505','#150015','#001500','#001515'];
+  const grid = document.getElementById('genresGrid');
+  if(grid) grid.innerHTML = mg.genres.slice(0,16).map((g,i) => `
+    <div class="genre-card" style="background:${colors[i%colors.length]}" onclick="browseGenre(${g.id},'${g.name}')">
+      <span>${g.name}</span>
+    </div>`).join('');
+
+  buildGenreTabs('movieGenreTabs', mg.genres, 'movie');
+  buildGenreTabs('tvGenreTabs', tg.genres, 'tv');
+}
+
+function buildGenreTabs(id, genres, type) {
+  const el = document.getElementById(id); if(!el) return;
+  el.innerHTML = `<button class="filter-tab active" onclick="filterGenre('',this,'${type}')">هەموو</button>` +
+    genres.slice(0,12).map(g => `<button class="filter-tab" onclick="filterGenre(${g.id},this,'${type}')">${g.name}</button>`).join('');
+}
+
+function filterGenre(id, btn, type) {
+  const tabsId = type==='movie' ? 'movieGenreTabs' : 'tvGenreTabs';
+  document.querySelectorAll(`#${tabsId} .filter-tab`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='movie') { movieGenre=id; moviePage=1; document.getElementById('moviesGrid').innerHTML=''; loadMoviesPage(); }
+  else { tvGenre=id; tvPage=1; document.getElementById('tvGrid').innerHTML=''; loadTVPage(); }
+}
+
+function browseGenre(id, name) {
+  movieGenre = id; showPage('movies');
+  setTimeout(() => {
+    document.querySelectorAll('#movieGenreTabs .filter-tab').forEach(t => { if(t.textContent===name) t.click(); });
+  }, 100);
+}
+
+// ─── MOVIES / TV ───
+async function loadMoviesPage() {
+  const p = { page: moviePage, sort_by: 'popularity.desc' };
+  if(movieGenre) p.with_genres = movieGenre;
+  const d = await api('/discover/movie', p);
+  document.getElementById('moviesGrid').innerHTML += d.results.map(m => card(m)).join('');
+}
+async function loadMoreMovies() { moviePage++; await loadMoviesPage(); }
+
+async function loadTVPage() {
+  const p = { page: tvPage, sort_by: 'popularity.desc' };
+  if(tvGenre) p.with_genres = tvGenre;
+  const d = await api('/discover/tv', p);
+  document.getElementById('tvGrid').innerHTML += d.results.map(m => card(m)).join('');
+}
+async function loadMoreTV() { tvPage++; await loadTVPage(); }
+
+// ─── TOP RATED ───
+async function loadTopRated() {
+  const ep = topType==='movie' ? '/movie/top_rated' : '/tv/top_rated';
+  const d = await api(ep, { page: topPage });
+  const start = (topPage-1)*20+1;
+  document.getElementById('top10List').innerHTML += d.results.map((m,i) => top10(m,start+i)).join('');
+}
+async function loadMoreTop() { topPage++; await loadTopRated(); }
+async function switchTop(type, btn) {
+  document.querySelectorAll('#page-top .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  topType=type; topPage=1;
+  document.getElementById('top10List').innerHTML = '';
+  await loadTopRated();
+}
+
+// ─── SEARCH ───
+let sTimer;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(sTimer);
+  const q = e.target.value.trim();
+  if(!q) return;
+  sTimer = setTimeout(() => doSearch(q), 380);
+});
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if(e.key==='Enter') { const q=e.target.value.trim(); if(q) doSearch(q); }
+});
+
+async function doSearch(q) {
+  searchQuery=q; searchPage=1;
+  showPage('search');
+  document.getElementById('searchTermEl').textContent = `"${q}"`;
+  document.getElementById('searchGrid').innerHTML = sk(8).replace(/sk-card/g, 'aspect-ratio:2/3;border-radius:10px;');
+  const d = await api('/search/multi', { query:q, page:1 });
+  const res = d.results.filter(m => m.media_type!=='person' && (m.poster_path||m.backdrop_path));
+  document.getElementById('searchGrid').innerHTML = res.map(m => card(m)).join('');
+  document.querySelector('.search-header-title').innerHTML = `ئەنجامی گەڕان بۆ: <span style="color:var(--gold)">"${q}"</span> <span style="font-size:0.9rem;color:var(--muted);font-weight:400;">(${d.total_results.toLocaleString()} دۆزرایەوە)</span>`;
+  document.getElementById('searchLM').style.display = d.total_pages>1 ? 'block' : 'none';
+}
+async function loadMoreSearch() {
+  searchPage++;
+  const d = await api('/search/multi', { query:searchQuery, page:searchPage });
+  document.getElementById('searchGrid').innerHTML += d.results.filter(m=>m.media_type!=='person').map(m=>card(m)).join('');
+}
+
+// ─── MODAL ───
+async function openModal(id, type) {
+  const modal = document.getElementById('modal');
+  modal.classList.add('open');
+  document.getElementById('modalContent').innerHTML = '<div style="padding:80px;text-align:center;color:var(--muted);font-size:1.5rem;">⏳</div>';
+  document.body.style.overflow = 'hidden';
+
+  const [det, cred, vids, sim] = await Promise.all([
+    api(`/${type}/${id}`),
+    api(`/${type}/${id}/credits`),
+    api(`/${type}/${id}/videos`),
+    api(`/${type}/${id}/similar`)
+  ]);
+
+  const title = det.title || det.name;
+  const date = det.release_date || det.first_air_date;
+  const rating = det.vote_average ? det.vote_average.toFixed(1) : '—';
+  const runtime = det.runtime ? `${Math.floor(det.runtime/60)}سەعات ${det.runtime%60}خولەک` : det.episode_run_time?.[0] ? `~${det.episode_run_time[0]}خ/قستە` : '';
+  const backdrop = det.backdrop_path ? imgUrl(det.backdrop_path,'w1280') : '';
+  const poster = det.poster_path ? imgUrl(det.poster_path,'w342') : null;
+  const genres = (det.genres||[]).map(g=>`<span class="modal-chip">${g.name}</span>`).join('');
+  const trailer = (vids.results||[]).find(v=>v.type==='Trailer'&&v.site==='YouTube') || (vids.results||[]).find(v=>v.site==='YouTube');
+  const saved = watchlist.some(w=>w.id===det.id);
+  const cast = (cred.cast||[]).slice(0,12).map(c=>`
+    <div class="cast-card">
+      <img class="cast-avatar" src="${c.profile_path?imgUrl(c.profile_path,'w185'):'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231e1e30%22 width=%22100%22 height=%22100%22/><text y=%2265%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2245%22>👤</text></svg>'}" alt="${c.name}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231e1e30%22 width=%22100%22 height=%22100%22/><text y=%2265%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2245%22>👤</text></svg>'">
+      <div class="cast-name">${c.name}</div>
+      <div class="cast-char">${c.character||''}</div>
+    </div>`).join('');
+  const similar = (sim.results||[]).slice(0,10).map(m=>`
+    <div class="sim-card" onclick="closeModal();setTimeout(()=>openModal(${m.id},'${type}'),260)">
+      ${m.poster_path ? `<img src="${imgUrl(m.poster_path,'w185')}" alt="" loading="lazy" onerror="this.style.display='none'">` : `<div style="aspect-ratio:2/3;background:var(--card);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🎬</div>`}
+      <p>${m.title||m.name||''}</p>
+    </div>`).join('');
+
+  const dataStr = JSON.stringify(det).replace(/"/g,'&quot;');
+  document.getElementById('modalContent').innerHTML = `
+    <div style="position:relative;">
+      ${backdrop ? `<img class="modal-backdrop-img" src="${backdrop}" alt="" onerror="this.style.display='none'">` : `<div style="height:100px;"></div>`}
+      <div class="modal-grad"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-top">
+        <div class="modal-poster">
+          ${poster ? `<img src="${poster}" alt="" onerror="this.parentNode.innerHTML='<div style=\\'aspect-ratio:2/3;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:2rem;\\'>🎬</div>'">` : `<div style="aspect-ratio:2/3;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:2rem;">🎬</div>`}
+        </div>
+        <div class="modal-info">
+          <div class="modal-title">${title}</div>
+          <div class="modal-meta-row">
+            <div class="modal-rating">★ ${rating}</div>
+            <span style="font-size:0.78rem;color:var(--muted)">${(det.vote_count||0).toLocaleString()} دەنگ</span>
+            ${yr(date)!=='—'?`<span class="modal-chip">${yr(date)}</span>`:''}
+            ${runtime?`<span class="modal-chip">⏱ ${runtime}</span>`:''}
+            ${det.status?`<span class="modal-chip">${det.status}</span>`:''}
+            ${type==='tv'&&det.number_of_seasons?`<span class="modal-chip">${det.number_of_seasons} وەرز</span>`:''}
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">${genres}</div>
+          ${det.tagline?`<div style="font-style:italic;color:var(--muted);margin-bottom:10px;font-size:0.88rem;">"${det.tagline}"</div>`:''}
+          <div class="modal-overview">${det.overview||'وەسفی بەردەست نییە.'}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-primary" style="font-size:0.82rem;padding:10px 20px;background:linear-gradient(135deg,#e84040,#c0392b);box-shadow:0 4px 16px rgba(232,64,64,0.3)" onclick="window.open('https://lordflix.org','_blank')">🎬 تەماشاکردن لە LordFlix</button>
+            <button class="btn-primary" style="font-size:0.82rem;padding:10px 20px" onclick="window.open('https://www.themoviedb.org/${type}/${id}','_blank')">🔗 TMDB</button>
+            <button class="btn-secondary" style="font-size:0.82rem;padding:10px 20px" id="mWLBtn" onclick="toggleWLModal(${dataStr})">${saved?'🔖 لە لیستدایە':'+ لیستەکەم'}</button>
+          </div>
+        </div>
+      </div>
+      ${trailer?`<div style="margin-top:26px;"><div class="modal-section-title">▶ تریلەر</div><div class="trailer-wrap"><iframe src="https://www.youtube.com/embed/${trailer.key}" allowfullscreen></iframe></div></div>`:''}
+      ${cast?`<div style="margin-bottom:22px;"><div class="modal-section-title">🎭 ئەکتەرەکان</div><div class="cast-grid">${cast}</div></div>`:''}
+      ${det.production_companies?.length?`<div style="margin-bottom:22px;"><div class="modal-section-title">🏢 بەرهەمهێنان</div><div style="display:flex;flex-wrap:wrap;gap:7px;">${det.production_companies.slice(0,5).map(c=>`<span class="modal-chip">${c.name}</span>`).join('')}</div></div>`:''}
+      ${similar?`<div><div class="modal-section-title">🎬 هاوشێوەکان</div><div class="similar-row">${similar}</div></div>`:''}
+    </div>`;
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleWLModal(item) {
+  const btn = document.getElementById('mWLBtn');
+  const idx = watchlist.findIndex(w=>w.id===item.id);
+  if(idx>-1) { watchlist.splice(idx,1); btn.innerHTML='+ لیستەکەم'; toast('لادەبرا لە لیستەکە'); }
+  else { watchlist.push(item); btn.innerHTML='🔖 لە لیستدایە'; toast('زیادکرا بە لیستەکەدا!'); }
+  localStorage.setItem('cv_wl', JSON.stringify(watchlist));
+}
+
+// ─── WATCHLIST ───
+function toggleWL(item, btn) {
+  if(typeof item === 'string') item = JSON.parse(decodeURIComponent(item));
+  const idx = watchlist.findIndex(w=>w.id===item.id);
+  if(idx>-1) { watchlist.splice(idx,1); btn.textContent='+'; btn.classList.remove('saved'); toast('لادەبرا'); }
+  else { watchlist.push(item); btn.textContent='🔖'; btn.classList.add('saved'); toast('زیادکرا!'); }
+  localStorage.setItem('cv_wl', JSON.stringify(watchlist));
+  renderWL();
+}
+
+function renderWL() {
+  const el = document.getElementById('watchlistContent'); if(!el) return;
+  if(!watchlist.length) {
+    el.innerHTML = `<div class="wl-empty"><div class="big">🎬</div><div style="font-size:1.05rem;font-weight:600;margin-bottom:8px;">لیستەکەت بەتاڵە</div><div>فیلم و زنجیرەکان تماشابکە و + بکە بۆ زیادکردن</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="movies-grid">${watchlist.map(m=>card(m)).join('')}</div>`;
+}
+
+// ─── AI RECOMMENDATIONS ───
+function selectChip(btn, group) {
+  document.querySelectorAll(`.ai-chip[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  aiPrefs[group] = btn.dataset.val;
+}
+
+function selectMood(el) {
+  document.querySelectorAll('.ai-mood-card').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  aiPrefs.mood = el.dataset.val;
+}
+
+// Map mood to TMDB genre IDs
+const moodToGenre = {
+  action: 28, comedy: 35, drama: 18, horror: 27,
+  'sci-fi': 878, romance: 10749, thriller: 53,
+  animation: 16, documentary: 99, adventure: 12
+};
+const moodToTVGenre = {
+  action: 10759, comedy: 35, drama: 18, horror: 9648,
+  'sci-fi': 10765, romance: 10749, thriller: 80,
+  animation: 16, documentary: 99, adventure: 10759
+};
+
+async function generateAI() {
+  const btn = document.getElementById('aiGenBtn');
+  const results = document.getElementById('aiResults');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ داتا هەڵدەگرێت...';
+  results.innerHTML = `<div class="ai-loading"><div class="ai-spinner"></div>زیرەکی دەستکرد کار دەکات...</div>`;
+
+  try {
+    // Build TMDB query based on prefs
+    const isTV = aiPrefs.type === 'tv';
+    const isBoth = aiPrefs.type === 'both';
+    const genreId = isTV ? moodToTVGenre[aiPrefs.mood] : moodToGenre[aiPrefs.mood];
+
+    let dateFrom = '', dateTo = '';
+    if(aiPrefs.era === 'new') { dateFrom = '2020-01-01'; }
+    else if(aiPrefs.era === '2010s') { dateFrom = '2010-01-01'; dateTo = '2019-12-31'; }
+    else if(aiPrefs.era === '2000s') { dateFrom = '2000-01-01'; dateTo = '2009-12-31'; }
+    else if(aiPrefs.era === 'classic') { dateTo = '1999-12-31'; }
+
+    const minRating = aiPrefs.rating === 'any' ? 0 : parseInt(aiPrefs.rating);
+
+    const movieParams = {
+      sort_by: 'vote_average.desc',
+      with_genres: moodToGenre[aiPrefs.mood],
+      'vote_count.gte': 500,
+      'vote_average.gte': minRating,
+      page: Math.floor(Math.random()*3)+1
+    };
+    if(dateFrom) movieParams['primary_release_date.gte'] = dateFrom;
+    if(dateTo) movieParams['primary_release_date.lte'] = dateTo;
+
+    const tvParams = {
+      sort_by: 'vote_average.desc',
+      with_genres: moodToTVGenre[aiPrefs.mood],
+      'vote_count.gte': 200,
+      'vote_average.gte': minRating,
+      page: Math.floor(Math.random()*3)+1
+    };
+    if(dateFrom) tvParams['first_air_date.gte'] = dateFrom;
+    if(dateTo) tvParams['first_air_date.lte'] = dateTo;
+
+    let items = [];
+    if(!isTV || isBoth) {
+      const md = await api('/discover/movie', movieParams);
+      items = [...items, ...(md.results||[]).slice(0,10).map(m=>({...m, _type:'movie'}))];
+    }
+    if(isTV || isBoth) {
+      const td = await api('/discover/tv', tvParams);
+      items = [...items, ...(td.results||[]).slice(0,10).map(m=>({...m, _type:'tv'}))];
+    }
+
+    // Shuffle and pick top 8
+    items = items.sort(() => Math.random()-0.5).slice(0,8);
+
+    // Build context for Claude
+    const moodLabels = { action:'کردار و هەجووم', comedy:'کۆمیدی', drama:'دراما', horror:'ترسناک', 'sci-fi':'زانست-فیکشن', romance:'خۆشەویستی', thriller:'تریلر', animation:'ئانیمەیشن', documentary:'دۆکیومێنتری', adventure:'ماجرا' };
+    const typeLabel = aiPrefs.type==='movie' ? 'فیلم' : aiPrefs.type==='tv' ? 'زنجیرە' : 'فیلم و زنجیرە';
+    const eraLabel = { new:'تازە (2020+)', '2010s':'دەیەی 2010', '2000s':'دەیەی 2000', classic:'کلاسیک', any:'هەموو ساڵ' }[aiPrefs.era];
+
+    const itemsText = items.map((m,i) =>
+      `${i+1}. "${m.title||m.name}" (${yr(m.release_date||m.first_air_date)}) - نمرە: ${m.vote_average?.toFixed(1)||'—'} - ${m._type==='tv'?'زنجیرە':'فیلم'}`
+    ).join('\n');
+
+    // Call Claude API for Kurdish reasons
+    const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `تۆ یارمەتیدەری سینەما بە زمانی کوردی (سۆرانی) یت. هەتا کاتی 5 هەڵبژاردن لە لیستی کراوە دیاریبکە و بۆ هەر یەک لە کوردی سۆرانی ئاشکرابکە بۆچی ئەم بەندەیە لەگەڵ داواکاری کەسەکە دەگونجێت. وەڵامەکەت پەکەیجی JSON بێت بەم شێوەیە:
+{"picks":[{"index":1,"reason":"بۆچی ئەم پێشنیارکراوە بەکوردی سۆرانی"},{"index":2,"reason":"..."},...]}
+تەنها JSON بگەرێنەوە، هیچ نوسینی دیکە مەکە.`,
+        messages: [{
+          role: 'user',
+          content: `کەسەکە داوای ${typeLabel} کرد بە جۆری ${moodLabels[aiPrefs.mood]||aiPrefs.mood}، سەردەمی ${eraLabel}، نمرەی ${aiPrefs.rating==='any'?'هەر چەند':'${aiPrefs.rating}+'}.\n\nلیستی بەردەست:\n${itemsText}\n\nباشترین 5 هەڵبژار و بۆچی بیخەوە بە کوردی سۆرانی.`
+        }]
+      })
+    });
+
+    const claudeData = await claudeRes.json();
+    let picks = [];
+    try {
+      const raw = claudeData.content?.[0]?.text || '{}';
+      const clean = raw.replace(/```json|```/g,'').trim();
+      const parsed = JSON.parse(clean);
+      picks = parsed.picks || [];
+    } catch(e) {
+      // fallback: use top 5 without AI reasons
+      picks = items.slice(0,5).map((_,i) => ({ index:i+1, reason:'بەپێی داواکارییەکەت هەڵبژێردرا' }));
+    }
+
+    // Render results
+    results.innerHTML = `
+      <div class="ai-results-header">✨ ${picks.length} پێشنیار بۆت دۆزراوە</div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        ${picks.map(pick => {
+          const item = items[pick.index-1];
+          if(!item) return '';
+          const poster = item.poster_path ? imgUrl(item.poster_path,'w185') : null;
+          const title = item.title || item.name || '—';
+          const date = item.release_date || item.first_air_date || '';
+          const rating = item.vote_average ? item.vote_average.toFixed(1) : '—';
+          return `
+            <div class="ai-result-card" onclick="openModal(${item.id},'${item._type}')">
+              ${poster
+                ? `<img class="ai-result-poster" src="${poster}" alt="" loading="lazy">`
+                : `<div class="ai-result-poster-empty">🎬</div>`
+              }
+              <div class="ai-result-info">
+                <div class="ai-result-title">${title}</div>
+                <div class="ai-result-why">💬 ${pick.reason||'پێشنیارکراوە'}</div>
+                <div class="ai-result-meta">
+                  <span class="ai-result-chip">${yr(date)}</span>
+                  <span class="ai-result-chip">${item._type==='tv'?'زنجیرە':'فیلم'}</span>
+                  <span class="ai-result-chip">★ ${rating}</span>
+                </div>
+                <div class="ai-match-score">★ ${rating} · کلیک بکە بۆ وردەکاری</div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <div style="text-align:center;margin-top:24px;">
+        <button class="ai-generate-btn" onclick="generateAI()" style="margin:0 auto">🔄 دووبارە پێشنیار بکە</button>
+      </div>`;
+
+  } catch(err) {
+    console.error(err);
+    results.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted);">❌ هەڵەیەک ڕوویدا. دووبارە هەوڵبدەوە.</div>`;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '✨ پێشنیارم بکە';
+}
+
+// ─── STATS ───
+async function loadStats() {
+  const [m, t] = await Promise.all([api('/discover/movie',{page:1}), api('/discover/tv',{page:1})]);
+  animCount('statMovies', m.total_results);
+  animCount('statTV', t.total_results);
+}
+function animCount(id, target) {
+  const el = document.getElementById(id); if(!el) return;
+  const disp = target>1000 ? Math.floor(target/1000) : target;
+  const suf = target>1000 ? 'ه+' : '+';
+  let cur=0; const step=Math.ceil(disp/40);
+  const iv = setInterval(() => {
+    cur = Math.min(cur+step, disp);
+    el.textContent = cur+suf;
+    if(cur>=disp) clearInterval(iv);
+  }, 40);
+}
+
+// ─── PAGE NAV ───
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  const btn = [...document.querySelectorAll('.nav-btn')].find(b=>b.getAttribute('onclick')===`showPage('${name}')`);
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(name==='movies' && !document.getElementById('moviesGrid').innerHTML) loadMoviesPage();
+  if(name==='tv' && !document.getElementById('tvGrid').innerHTML) loadTVPage();
+  if(name==='top' && !document.getElementById('top10List').innerHTML) loadTopRated();
+  if(name==='watchlist') renderWL();
+}
+
+// ─── KEYBOARD ───
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') closeModal();
+  if(e.key==='/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault(); document.getElementById('searchInput').focus();
+  }
+});
+
+// ─── INTERSECTION ───
+new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 }).observe.bind(
+  new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 })
+);
+document.querySelectorAll('.fade-in').forEach(el => {
+  new IntersectionObserver(([e]) => { if(e.isIntersecting) { el.classList.add('visible'); } }, { threshold: 0.08 }).observe(el);
+});
+
+// ─── NETWORK CHECK ───
+function isOnline() {
+  return typeof navigator !== 'undefined' && navigator.onLine !== false;
+}
+
+// ─── INIT ───
+function safeLoad(promise, fallbackEl, fallbackHTML) {
+  return promise.catch(e => {
+    console.warn('Load error:', e);
+    const el = document.getElementById(fallbackEl);
+    if(el) el.innerHTML = fallbackHTML || '';
+  });
+}
+
+async function init() {
+  const sk8 = () => Array(8).fill('<div class="skeleton sk-card"></div>').join('');
+  safeLoad(initHero(), null, null);
+  safeLoad(
+    api('/trending/all/week').then(d => { document.getElementById('trendingRow').innerHTML = d.results.slice(0,14).map(m=>card(m,true)).join(''); }),
+    'trendingRow', sk8()
+  );
+  safeLoad(
+    api('/movie/popular').then(d => { document.getElementById('popMoviesRow').innerHTML = d.results.slice(0,12).map(m=>card(m)).join(''); }),
+    'popMoviesRow', sk8()
+  );
+  safeLoad(
+    api('/tv/popular').then(d => { document.getElementById('popTVRow').innerHTML = d.results.slice(0,12).map(m=>card(m)).join(''); }),
+    'popTVRow', sk8()
+  );
+  safeLoad(
+    api('/movie/now_playing').then(d => { document.getElementById('nowPlayingRow').innerHTML = d.results.slice(0,12).map(m=>card(m)).join(''); }),
+    'nowPlayingRow', sk8()
+  );
+  safeLoad(
+    api('/movie/top_rated').then(d => { document.getElementById('topRatedRow').innerHTML = d.results.slice(0,12).map(m=>card(m)).join(''); }),
+    'topRatedRow', sk8()
+  );
+  safeLoad(loadGenres(), null, null);
+  safeLoad(loadStats(), null, null);
+}
+
+// ─── MOBILE MENU ───
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = menu.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburgerBtn').classList.remove('open');
+}
+
+// Mobile search input wiring
+document.addEventListener('DOMContentLoaded', () => {
+  const msi = document.getElementById('mobileSearchInput');
+  if(msi) {
+    let msTimer;
+    msi.addEventListener('input', e => {
+      clearTimeout(msTimer);
+      const q = e.target.value.trim();
+      if(!q) return;
+      msTimer = setTimeout(() => { closeMobileMenu(); doSearch(q); }, 380);
+    });
+    msi.addEventListener('keydown', e => {
+      if(e.key==='Enter') { const q=e.target.value.trim(); if(q){ closeMobileMenu(); doSearch(q); } }
+    });
+  }
+});
+
+init();
+</script>
+</body>
+</html>
